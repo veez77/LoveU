@@ -1,0 +1,103 @@
+{
+  "app": {
+    "name": "LoveU",
+    "tagline": "מעקב אחר פעילויות בית ספר"
+  },
+  "auth": {
+    "login": {
+      "title": "התחברות",
+      "description": "הזן את שמך כדי לגשת ללוח השנה המשפחתי",
+      "firstName": "שם פרטי",
+      "firstNamePlaceholder": "הזן את שמך הפרטי",
+      "lastName": "שם משפחה",
+      "lastNamePlaceholder": "הזן את שם המשפחה שלך",
+      "submit": "התחבר",
+      "loading": "מתחבר...",
+      "firstTime": "פעם ראשונה כאן?",
+      "completeSetup": "השלם הגדרה"
+    },
+    "setup": {
+      "title": "ברוכים הבאים ל-LoveU",
+      "description": "הגדר את חשבון המשפחה שלך כדי להתחיל",
+      "familyName": "שם משפחה",
+      "familyNamePlaceholder": "למשל, משפחת כהן",
+      "firstName": "שמך הפרטי",
+      "firstNamePlaceholder": "הזן את שמך הפרטי",
+      "lastName": "שם המשפחה שלך",
+      "lastNamePlaceholder": "הזן את שם המשפחה שלך",
+      "role": "אני...",
+      "parent": "הורה",
+      "student": "תלמיד",
+      "submit": "השלם הגדרה",
+      "loading": "יוצר חשבון...",
+      "alreadyHaveAccount": "כבר יש לך חשבון?",
+      "login": "התחבר"
+    },
+    "logout": "התנתק"
+  },
+  "calendar": {
+    "title": "לוח שנה",
+    "today": "היום",
+    "month": "חודש",
+    "week": "שבוע",
+    "day": "יום",
+    "previousMonth": "חודש קודם",
+    "nextMonth": "חודש הבא",
+    "previousWeek": "שבוע קודם",
+    "nextWeek": "שבוע הבא",
+    "previousDay": "יום קודם",
+    "nextDay": "יום הבא",
+    "allDay": "כל היום",
+    "noEvents": "אין אירועים מתוכננים ליום זה",
+    "moreEvents": "נוספים"
+  },
+  "events": {
+    "title": "אירועים",
+    "new": "אירוע חדש",
+    "create": "צור אירוע",
+    "edit": "ערוך אירוע",
+    "delete": "מחק",
+    "save": "שמור שינויים",
+    "saving": "שומר...",
+    "cancel": "ביטול",
+    "confirmDelete": "האם אתה בטוח שברצונך למחוק אירוע זה?",
+    "form": {
+      "title": "כותרת",
+      "titlePlaceholder": "למשל, מבחן גמר במתמטיקה",
+      "eventType": "סוג אירוע",
+      "date": "תאריך",
+      "allDay": "אירוע של כל היום",
+      "startTime": "שעת התחלה",
+      "endTime": "שעת סיום",
+      "description": "תיאור",
+      "descriptionPlaceholder": "הוסף הערות או פרטים על אירוע זה...",
+      "required": "שדה חובה"
+    },
+    "types": {
+      "exam": "מבחן",
+      "project": "פרויקט",
+      "book_report": "דוח קריאה",
+      "school_event": "אירוע בית ספר",
+      "private_lesson": "שיעור פרטי"
+    }
+  },
+  "navigation": {
+    "calendar": "לוח שנה",
+    "newEvent": "חדש",
+    "menu": "תפריט"
+  },
+  "errors": {
+    "unauthorized": "לא מורשה",
+    "notFound": "לא נמצא",
+    "serverError": "אירעה שגיאה. אנא נסה שוב.",
+    "invalidInput": "קלט לא חוקי",
+    "required": "שדה זה נדרש"
+  },
+  "common": {
+    "loading": "טוען...",
+    "error": "שגיאה",
+    "success": "הצלחה",
+    "close": "סגור",
+    "back": "חזור"
+  }
+}

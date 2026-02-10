@@ -1,0 +1,103 @@
+{
+  "app": {
+    "name": "LoveU",
+    "tagline": "School Activities Tracker"
+  },
+  "auth": {
+    "login": {
+      "title": "Log In",
+      "description": "Enter your name to access your family calendar",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "submit": "Log In",
+      "loading": "Logging in...",
+      "firstTime": "First time here?",
+      "completeSetup": "Complete setup"
+    },
+    "setup": {
+      "title": "Welcome to LoveU",
+      "description": "Set up your family account to get started",
+      "familyName": "Family Name",
+      "familyNamePlaceholder": "e.g., The Smiths",
+      "firstName": "Your First Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastName": "Your Last Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "role": "I am a...",
+      "parent": "Parent",
+      "student": "Student",
+      "submit": "Complete Setup",
+      "loading": "Creating account...",
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Log in"
+    },
+    "logout": "Logout"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "today": "Today",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "previousMonth": "Previous Month",
+    "nextMonth": "Next Month",
+    "previousWeek": "Previous Week",
+    "nextWeek": "Next Week",
+    "previousDay": "Previous Day",
+    "nextDay": "Next Day",
+    "allDay": "All Day",
+    "noEvents": "No events scheduled for this day",
+    "moreEvents": "more"
+  },
+  "events": {
+    "title": "Events",
+    "new": "New Event",
+    "create": "Create Event",
+    "edit": "Edit Event",
+    "delete": "Delete",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure you want to delete this event?",
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "e.g., Math Final Exam",
+      "eventType": "Event Type",
+      "date": "Date",
+      "allDay": "All-day event",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "description": "Description",
+      "descriptionPlaceholder": "Add notes or details about this event...",
+      "required": "Required field"
+    },
+    "types": {
+      "exam": "Exam",
+      "project": "Project",
+      "book_report": "Book Report",
+      "school_event": "School Event",
+      "private_lesson": "Private Lesson"
+    }
+  },
+  "navigation": {
+    "calendar": "Calendar",
+    "newEvent": "New",
+    "menu": "Menu"
+  },
+  "errors": {
+    "unauthorized": "Unauthorized",
+    "notFound": "Not found",
+    "serverError": "An error occurred. Please try again.",
+    "invalidInput": "Invalid input",
+    "required": "This field is required"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "back": "Back"
+  }
+}
