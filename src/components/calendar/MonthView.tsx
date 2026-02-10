@@ -73,13 +73,13 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
         onSwipeRight={handlePrevMonth}
         className="flex-1 overflow-auto"
       >
-        <div className="p-2 md:p-4">
+        <div className="p-1 md:p-4 w-full">
           {/* Day headers */}
-          <div className="grid grid-cols-7 gap-0.5 md:gap-1 mb-2">
+          <div className="grid grid-cols-7 gap-px md:gap-1 mb-1 md:mb-2">
             {daysOfWeek.map((day) => (
               <div
                 key={day}
-                className="text-center text-xs md:text-sm font-medium text-muted-foreground py-1 md:py-2"
+                className="text-center text-[10px] md:text-sm font-medium text-muted-foreground py-1"
               >
                 {day}
               </div>
@@ -87,7 +87,7 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
           </div>
 
           {/* Calendar days */}
-          <div className="grid grid-cols-7 gap-0.5 md:gap-1">
+          <div className="grid grid-cols-7 gap-px md:gap-1">
             {days.map((day, idx) => {
               const dayEvents = sortEventsByTime(getEventsForDate(events, day));
               const isCurrentMonth = isSameMonthUtil(day, currentDate);
@@ -97,27 +97,26 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
                 <div
                   key={idx}
                   className={cn(
-                    'min-h-[80px] md:min-h-[100px] p-1 md:p-2 border rounded-lg',
-                    'min-w-[44px]', // Ensure minimum touch target width
+                    'min-h-[70px] md:min-h-[100px] p-0.5 md:p-2 border rounded',
                     !isCurrentMonth && 'bg-muted/30 text-muted-foreground',
-                    isToday && 'ring-2 ring-primary'
+                    isToday && 'ring-1 md:ring-2 ring-primary'
                   )}
                 >
                   <div
                     className={cn(
-                      'text-xs md:text-sm font-medium mb-1',
+                      'text-[10px] md:text-sm font-medium mb-0.5 md:mb-1',
                       isToday && 'text-primary font-bold'
                     )}
                   >
                     {formatDayNumber(day)}
                   </div>
                   <div className="space-y-0.5 md:space-y-1">
-                    {dayEvents.slice(0, 3).map((event) => (
+                    {dayEvents.slice(0, 2).map((event) => (
                       <EventCard key={event.id} event={event} size="small" />
                     ))}
-                    {dayEvents.length > 3 && (
-                      <div className="text-[10px] md:text-xs text-muted-foreground px-1">
-                        +{dayEvents.length - 3} more
+                    {dayEvents.length > 2 && (
+                      <div className="text-[8px] md:text-xs text-muted-foreground px-0.5">
+                        +{dayEvents.length - 2}
                       </div>
                     )}
                   </div>

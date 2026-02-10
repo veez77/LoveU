@@ -3,6 +3,7 @@
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -48,13 +49,26 @@ function LoginForm() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-3xl font-bold text-center">LoveU</CardTitle>
-          <CardDescription className="text-center">
-            Enter your name to access your family calendar
-          </CardDescription>
-        </CardHeader>
+      <div className="w-full max-w-md space-y-6">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <Image
+            src="/logo.png"
+            alt="LoveU Logo"
+            width={200}
+            height={200}
+            priority
+            className="w-48 h-auto"
+          />
+        </div>
+
+        <Card className="w-full">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-3xl font-bold text-center">Welcome Back</CardTitle>
+            <CardDescription className="text-center">
+              Enter your name to access your family calendar
+            </CardDescription>
+          </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {error && (
@@ -104,7 +118,8 @@ function LoginForm() {
             </div>
           </CardFooter>
         </form>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -7,7 +7,10 @@ import type { Event } from '@/types/database';
  */
 export function getEventsForDate(events: Event[], date: Date): Event[] {
   return events.filter((event) => {
-    const eventDate = parseISO(event.start_date);
+    // Handle both string and Date types from database
+    const eventDate = typeof event.start_date === 'string'
+      ? parseISO(event.start_date)
+      : new Date(event.start_date);
     return isSameDay(eventDate, date);
   });
 }

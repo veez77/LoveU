@@ -13,7 +13,7 @@ export default async function CalendarPage() {
   const events = await getEventsByFamily(session.user.familyId);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen w-full overflow-hidden">
       <CalendarNav currentView="month" />
       <MonthView events={events} />
     </div>

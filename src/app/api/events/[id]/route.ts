@@ -2,7 +2,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
 import { getEventById, updateEvent, deleteEvent } from '@/lib/db/queries';
-import type { UpdateEventInput } from '@/types/database';
+import type { UpdateEventInput, Event } from '@/types/database';
+
+// Serialize event dates to strings for JSON response
+function serializeEvent(event: any): Event {
+  return {
+    ...event,
+    start_date: event.start_date instanceof Date
+      ? event.start_date.toISOString().split('T')[0]
+      : event.start_date,
+  };
+}
 
 // GET /api/events/[id] - Get specific event
 export async function GET(
@@ -31,7 +41,10 @@ export async function GET(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    return NextResponse.json({ event }, { status: 200 });
+    // Serialize dates to strings for JSON response
+    const serializedEvent = serializeEvent(event);
+
+    return NextResponse.json({ event: serializedEvent }, { status: 200 });
   } catch (error) {
     console.error('Get event error:', error);
     return NextResponse.json(
@@ -97,7 +110,10 @@ export async function PATCH(
       );
     }
 
-    return NextResponse.json({ event: updatedEvent }, { status: 200 });
+    // Serialize dates to strings for JSON response
+    const serializedEvent = serializeEvent(updatedEvent);
+
+    return NextResponse.json({ event: serializedEvent }, { status: 200 });
   } catch (error) {
     console.error('Update event error:', error);
     return NextResponse.json(

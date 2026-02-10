@@ -2,7 +2,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
 import { getEventsByFamily, getEventsByDateRange, createEvent } from '@/lib/db/queries';
-import type { CreateEventInput } from '@/types/database';
+import type { CreateEventInput, Event } from '@/types/database';
+
+// Serialize event dates to strings for JSON response
+function serializeEvent(event: any): Event {
+  return {
+    ...event,
+    start_date: event.start_date instanceof Date
+      ? event.start_date.toISOString().split('T')[0]
+      : event.start_date,
+  };
+}
 
 // GET /api/events - List events for the authenticated user's family
 export async function GET(request: NextRequest) {
@@ -30,7 +40,10 @@ export async function GET(request: NextRequest) {
       events = await getEventsByFamily(session.user.familyId);
     }
 
-    return NextResponse.json({ events }, { status: 200 });
+    // Serialize dates to strings for JSON response
+    const serializedEvents = events.map(serializeEvent);
+
+    return NextResponse.json({ events: serializedEvents }, { status: 200 });
   } catch (error) {
     console.error('Get events error:', error);
     return NextResponse.json(
@@ -83,7 +96,10 @@ export async function POST(request: NextRequest) {
 
     const event = await createEvent(eventInput);
 
-    return NextResponse.json({ event }, { status: 201 });
+    // Serialize dates to strings for JSON response
+    const serializedEvent = serializeEvent(event);
+
+    return NextResponse.json({ event: serializedEvent }, { status: 201 });
   } catch (error) {
     console.error('Create event error:', error);
     return NextResponse.json(

@@ -17,11 +17,31 @@ interface EventFormProps {
 
 export function EventForm({ event, mode }: EventFormProps) {
   const router = useRouter();
+
+  // Format start_date to YYYY-MM-DD string for date input
+  const formatDateForInput = (date: string | Date | undefined): string => {
+    if (!date) return '';
+    if (typeof date === 'string') {
+      // If it's already a string, check if it needs formatting
+      if (date.includes('T')) {
+        // ISO string format, extract date part
+        return date.split('T')[0];
+      }
+      return date;
+    }
+    // If it's a Date object, convert to YYYY-MM-DD
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const [formData, setFormData] = useState({
     title: event?.title || '',
     description: event?.description || '',
     event_type: (event?.event_type || 'exam') as EventType,
-    start_date: event?.start_date || '',
+    start_date: formatDateForInput(event?.start_date),
     start_time: event?.start_time || '',
     end_time: event?.end_time || '',
     is_all_day: event?.is_all_day || false,
