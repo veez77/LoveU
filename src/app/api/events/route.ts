@@ -1,7 +1,7 @@
 // Events API - List and Create
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
-import { getEventsByFamily, getEventsByDateRange, createEvent } from '@/lib/db/queries';
+import { getEventsByFamily, getEventsByDateRange, searchEvents, createEvent } from '@/lib/db/queries';
 import type { CreateEventInput, Event } from '@/types/database';
 
 // Serialize event dates to strings for JSON response
@@ -25,10 +25,14 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
+    const search = searchParams.get('search');
 
     let events;
 
-    if (startDate && endDate) {
+    if (search) {
+      // Search events by title
+      events = await searchEvents(session.user.familyId, search);
+    } else if (startDate && endDate) {
       // Get events in date range
       events = await getEventsByDateRange(
         session.user.familyId,

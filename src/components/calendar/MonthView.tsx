@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { SwipeHandler } from './SwipeHandler';
 import { EventCard } from './EventCard';
 import { DayEventsModal } from './DayEventsModal';
+import { EventSearchModal } from './EventSearchModal';
 import { Button } from '@/components/ui/button';
 import {
   getMonthDays,
@@ -31,6 +32,7 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState(initialDate || new Date());
   const [modalDay, setModalDay] = useState<{ date: Date; events: Event[] } | null>(null);
+  const [showSearch, setShowSearch] = useState(false);
 
   const days = getMonthDays(currentDate);
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -71,10 +73,16 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
           </Button>
         </div>
         <h2 className="text-base md:text-xl font-semibold">{formatMonthYear(currentDate)}</h2>
-        <Button onClick={() => router.push('/events/new')} className="hidden md:flex">
-          + New Event
-        </Button>
-        <div className="w-11 md:hidden" />
+        <div className="flex items-center gap-1 md:gap-2">
+          <Button variant="outline" size="sm" onClick={() => setShowSearch(true)} className="min-w-[44px] min-h-[44px]">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </Button>
+          <Button onClick={() => router.push('/events/new')} className="hidden md:flex">
+            + New Event
+          </Button>
+        </div>
       </div>
 
       {/* Calendar Grid */}
@@ -145,6 +153,11 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
           events={modalDay.events}
           onClose={() => setModalDay(null)}
         />
+      )}
+
+      {/* Search Modal */}
+      {showSearch && (
+        <EventSearchModal onClose={() => setShowSearch(false)} />
       )}
     </div>
   );
