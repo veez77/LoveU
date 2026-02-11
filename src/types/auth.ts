@@ -17,6 +17,7 @@ export interface Session {
 }
 
 export interface LoginRequest {
+  familyName: string;
   firstName: string;
   lastName: string;
 }

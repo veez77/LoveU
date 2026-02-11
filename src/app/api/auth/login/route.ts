@@ -1,28 +1,38 @@
 // Login API route
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserByName } from '@/lib/db/queries';
+import { getUserByFamilyAndName, getFamilyByName } from '@/lib/db/queries';
 import { generateToken } from '@/lib/auth/jwt';
 import type { LoginRequest } from '@/types/auth';
 
 export async function POST(request: NextRequest) {
   try {
     const body: LoginRequest = await request.json();
-    const { firstName, lastName } = body;
+    const { familyName, firstName, lastName } = body;
 
     // Validate input
-    if (!firstName || !lastName) {
+    if (!familyName || !firstName || !lastName) {
       return NextResponse.json(
-        { error: 'First name and last name are required' },
+        { error: 'Family name, first name, and last name are required' },
         { status: 400 }
       );
     }
 
-    // Find user by name
-    const user = await getUserByName(firstName, lastName);
+    // Find family by name
+    const family = await getFamilyByName(familyName);
+
+    if (!family) {
+      return NextResponse.json(
+        { error: 'Family not found. Please check the family name or complete setup.' },
+        { status: 404 }
+      );
+    }
+
+    // Find user by name within the family
+    const user = await getUserByFamilyAndName(family.id, firstName, lastName);
 
     if (!user) {
       return NextResponse.json(
-        { error: 'User not found. Please check your name or complete setup.' },
+        { error: 'User not found in this family. Please check your name or complete setup.' },
         { status: 404 }
       );
     }

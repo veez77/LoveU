@@ -1,6 +1,6 @@
 // Setup API route for creating new family and first user
 import { NextRequest, NextResponse } from 'next/server';
-import { createFamily, createUser, getUserByName, getAllFamilies } from '@/lib/db/queries';
+import { createFamily, createUser, getUserByFamilyAndName, getFamilyByName } from '@/lib/db/queries';
 import { generateToken } from '@/lib/auth/jwt';
 import type { SetupRequest } from '@/types/auth';
 
@@ -17,26 +17,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user already exists
-    const existingUser = await getUserByName(firstName, lastName);
-    if (existingUser) {
-      return NextResponse.json(
-        { error: 'A user with this name already exists. Please use the login page.' },
-        { status: 409 }
-      );
+    // Find existing family by name or create a new one
+    let family = await getFamilyByName(familyName);
+
+    if (!family) {
+      family = await createFamily({ name: familyName });
     }
 
-    // Check if this is the first family (initial setup) or joining existing
-    const families = await getAllFamilies();
-    let family;
-
-    if (families.length === 0) {
-      // First family - create it
-      family = await createFamily({ name: familyName });
-    } else {
-      // For now, only support one family (can be extended later)
-      // Second user joins the existing family
-      family = families[0];
+    // Check if user already exists within this family
+    const existingUser = await getUserByFamilyAndName(family.id, firstName, lastName);
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'A user with this name already exists in this family. Please use the login page.' },
+        { status: 409 }
+      );
     }
 
     // Create user
@@ -66,7 +60,6 @@ export async function POST(request: NextRequest) {
           lastName: user.last_name,
           role: user.role,
         },
-        isFirstUser: families.length === 0,
       },
       { status: 201 }
     );

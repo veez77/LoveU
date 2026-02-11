@@ -31,6 +31,10 @@ export async function getAllFamilies(): Promise<Family[]> {
   return query<Family>('SELECT * FROM families ORDER BY created_at DESC');
 }
 
+export async function getFamilyByName(name: string): Promise<Family | null> {
+  return queryOne<Family>('SELECT * FROM families WHERE name = $1', [name]);
+}
+
 // ============================================================================
 // USERS
 // ============================================================================
@@ -57,6 +61,17 @@ export async function getUserByName(
   return queryOne<User>(
     'SELECT * FROM users WHERE first_name = $1 AND last_name = $2',
     [firstName, lastName]
+  );
+}
+
+export async function getUserByFamilyAndName(
+  familyId: number,
+  firstName: string,
+  lastName: string
+): Promise<User | null> {
+  return queryOne<User>(
+    'SELECT * FROM users WHERE family_id = $1 AND first_name = $2 AND last_name = $3',
+    [familyId, firstName, lastName]
   );
 }
 

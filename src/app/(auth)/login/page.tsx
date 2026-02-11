@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [familyName, setFamilyName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
@@ -26,7 +27,7 @@ function LoginForm() {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName }),
+        body: JSON.stringify({ familyName, firstName, lastName }),
       });
 
       const data = await response.json();
@@ -77,6 +78,19 @@ function LoginForm() {
               </div>
             )}
             <div className="space-y-2">
+              <Label htmlFor="familyName">Family Name</Label>
+              <Input
+                id="familyName"
+                type="text"
+                placeholder="Enter your family name"
+                value={familyName}
+                onChange={(e) => setFamilyName(e.target.value)}
+                required
+                disabled={loading}
+                autoFocus
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="firstName">First Name</Label>
               <Input
                 id="firstName"
@@ -86,7 +100,6 @@ function LoginForm() {
                 onChange={(e) => setFirstName(e.target.value)}
                 required
                 disabled={loading}
-                autoFocus
               />
             </div>
             <div className="space-y-2">
