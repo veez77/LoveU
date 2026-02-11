@@ -26,12 +26,13 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
     const search = searchParams.get('search');
+    const exactWord = searchParams.get('exactWord') === 'true';
 
     let events;
 
     if (search) {
       // Search events by title
-      events = await searchEvents(session.user.familyId, search);
+      events = await searchEvents(session.user.familyId, search, exactWord);
     } else if (startDate && endDate) {
       // Get events in date range
       events = await getEventsByDateRange(
@@ -77,7 +78,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate event type
-    const validTypes = ['exam', 'project', 'book_report', 'school_event', 'private_lesson'];
+    const validTypes = ['exam', 'sub_exam', 'project', 'book_report', 'school_event', 'private_lesson'];
     if (!validTypes.includes(event_type)) {
       return NextResponse.json(
         { error: 'Invalid event type' },

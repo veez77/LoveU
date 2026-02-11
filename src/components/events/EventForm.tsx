@@ -59,10 +59,16 @@ export function EventForm({ event, mode, defaultDate }: EventFormProps) {
       const url = mode === 'create' ? '/api/events' : `/api/events/${event?.id}`;
       const method = mode === 'create' ? 'POST' : 'PATCH';
 
+      // Fallback to all-day if no times were provided
+      const dataToSubmit = { ...formData };
+      if (!dataToSubmit.is_all_day && !dataToSubmit.start_time) {
+        dataToSubmit.is_all_day = true;
+      }
+
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSubmit),
       });
 
       const data = await response.json();

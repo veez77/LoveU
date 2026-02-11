@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Event types enum
 CREATE TYPE event_type AS ENUM (
   'exam',
+  'sub_exam',
   'project',
   'book_report',
   'school_event',

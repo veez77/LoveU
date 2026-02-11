@@ -15,6 +15,7 @@ export interface EventFormData {
 
 export const EVENT_TYPE_LABELS: Record<EventType, string> = {
   exam: 'Exam',
+  sub_exam: 'Sub-Exam',
   project: 'Project',
   book_report: 'Book Report',
   school_event: 'School Event',
@@ -23,6 +24,7 @@ export const EVENT_TYPE_LABELS: Record<EventType, string> = {
 
 export const EVENT_TYPE_COLORS: Record<EventType, string> = {
   exam: 'bg-red-100 text-red-800 border-red-200',
+  sub_exam: 'bg-pink-100 text-pink-800 border-pink-200',
   project: 'bg-blue-100 text-blue-800 border-blue-200',
   book_report: 'bg-green-100 text-green-800 border-green-200',
   school_event: 'bg-purple-100 text-purple-800 border-purple-200',

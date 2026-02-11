@@ -16,6 +16,7 @@ export function EventSearchModal({ onClose }: EventSearchModalProps) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState('');
+  const [exactWord, setExactWord] = useState(false);
   const [results, setResults] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +35,9 @@ export function EventSearchModal({ onClose }: EventSearchModalProps) {
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/events?search=${encodeURIComponent(query.trim())}`);
+        const params = new URLSearchParams({ search: query.trim() });
+        if (exactWord) params.set('exactWord', 'true');
+        const res = await fetch(`/api/events?${params}`);
         if (res.ok) {
           const data = await res.json();
           setResults(data.events);
@@ -47,7 +50,7 @@ export function EventSearchModal({ onClose }: EventSearchModalProps) {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, exactWord]);
 
   const handleEventClick = (eventId: number) => {
     router.push(`/events/${eventId}/edit`);
@@ -99,6 +102,18 @@ export function EventSearchModal({ onClose }: EventSearchModalProps) {
             >
               ×
             </button>
+          </div>
+          <div className="flex items-center gap-2 mt-2 ml-7">
+            <input
+              type="checkbox"
+              id="exactWord"
+              checked={exactWord}
+              onChange={(e) => setExactWord(e.target.checked)}
+              className="h-4 w-4 rounded border-gray-300"
+            />
+            <label htmlFor="exactWord" className="text-sm text-muted-foreground cursor-pointer">
+              Entire word
+            </label>
           </div>
         </div>
 

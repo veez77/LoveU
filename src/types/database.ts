@@ -2,6 +2,7 @@
 
 export type EventType =
   | 'exam'
+  | 'sub_exam'
   | 'project'
   | 'book_report'
   | 'school_event'

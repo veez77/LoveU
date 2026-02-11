@@ -135,8 +135,18 @@ export async function getEventsByType(
 
 export async function searchEvents(
   familyId: number,
-  searchTerm: string
+  searchTerm: string,
+  exactWord: boolean = false
 ): Promise<Event[]> {
+  if (exactWord) {
+    return query<Event>(
+      `SELECT * FROM events
+       WHERE family_id = $1
+       AND title ~* $2
+       ORDER BY start_date ASC, start_time ASC`,
+      [familyId, `\\m${searchTerm}\\M`]
+    );
+  }
   return query<Event>(
     `SELECT * FROM events
      WHERE family_id = $1
