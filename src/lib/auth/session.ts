@@ -1,5 +1,6 @@
 // Session management utilities
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { verifyToken, getTokenFromCookies } from './jwt';
 import type { Session } from '@/types/auth';
 
@@ -60,7 +61,7 @@ export async function requireAuth(): Promise<Session> {
   const session = await getSession();
 
   if (!session) {
-    throw new Error('Unauthorized');
+    redirect('/login');
   }
 
   return session;

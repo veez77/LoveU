@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { LogoutButton } from '@/components/layout/LogoutButton';
 import { cn } from '@/lib/utils';
 import { getSession } from '@/lib/auth/session';
 
@@ -10,12 +11,6 @@ interface CalendarNavProps {
 
 export async function CalendarNav({ currentView }: CalendarNavProps) {
   const session = await getSession();
-
-  const handleLogout = async () => {
-    'use server';
-    const { cookies } = await import('next/headers');
-    (await cookies()).delete('auth-token');
-  };
 
   return (
     <div className="border-b bg-background">
@@ -68,11 +63,9 @@ export async function CalendarNav({ currentView }: CalendarNavProps) {
           </div>
 
           {/* Logout - Hidden on mobile */}
-          <form action={handleLogout} className="hidden md:block">
-            <Button variant="outline" size="sm" type="submit">
-              Logout
-            </Button>
-          </form>
+          <div className="hidden md:block">
+            <LogoutButton />
+          </div>
         </div>
       </div>
     </div>
