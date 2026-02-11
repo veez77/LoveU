@@ -9,6 +9,7 @@ import {
   getNextDay,
   getPrevDay,
   formatFullDate,
+  formatDateForAPI,
   formatHour,
   getHoursArray,
 } from '@/lib/calendar/date-utils';
@@ -41,6 +42,10 @@ export function DayView({ events, initialDate }: DayViewProps) {
     setCurrentDate(new Date());
   };
 
+  const handleAddEvent = () => {
+    router.push(`/events/new?date=${formatDateForAPI(currentDate)}`);
+  };
+
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -57,7 +62,7 @@ export function DayView({ events, initialDate }: DayViewProps) {
           </Button>
         </div>
         <h2 className="text-sm md:text-xl font-semibold truncate px-2">{formatFullDate(currentDate)}</h2>
-        <Button onClick={() => router.push('/events/new')} className="hidden md:flex">
+        <Button onClick={handleAddEvent} className="hidden md:flex">
           + New Event
         </Button>
         <div className="w-11 md:hidden" />
@@ -94,7 +99,10 @@ export function DayView({ events, initialDate }: DayViewProps) {
                   <div className="w-20 flex-shrink-0 text-xs text-muted-foreground p-2">
                     {formatHour(hour)}
                   </div>
-                  <div className="flex-1 min-h-[60px] p-2 space-y-2">
+                  <div
+                    onClick={handleAddEvent}
+                    className="flex-1 min-h-[60px] p-2 space-y-2 cursor-pointer hover:bg-muted/30 rounded transition-colors"
+                  >
                     {hourEvents.map((event) => (
                       <EventCard key={event.id} event={event} size="medium" />
                     ))}
@@ -111,7 +119,7 @@ export function DayView({ events, initialDate }: DayViewProps) {
               <Button
                 variant="outline"
                 className="mt-4"
-                onClick={() => router.push('/events/new')}
+                onClick={handleAddEvent}
               >
                 Create Event
               </Button>

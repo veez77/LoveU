@@ -13,9 +13,10 @@ import type { Event, EventType } from '@/types/database';
 interface EventFormProps {
   event?: Event;
   mode: 'create' | 'edit';
+  defaultDate?: string;
 }
 
-export function EventForm({ event, mode }: EventFormProps) {
+export function EventForm({ event, mode, defaultDate }: EventFormProps) {
   const router = useRouter();
 
   // Format start_date to YYYY-MM-DD string for date input
@@ -41,10 +42,10 @@ export function EventForm({ event, mode }: EventFormProps) {
     title: event?.title || '',
     description: event?.description || '',
     event_type: (event?.event_type || 'exam') as EventType,
-    start_date: formatDateForInput(event?.start_date),
+    start_date: formatDateForInput(event?.start_date) || defaultDate || '',
     start_time: event?.start_time || '',
     end_time: event?.end_time || '',
-    is_all_day: event?.is_all_day || false,
+    is_all_day: event?.is_all_day ?? true,
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

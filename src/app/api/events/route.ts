@@ -89,9 +89,9 @@ export async function POST(request: NextRequest) {
       description,
       event_type,
       start_date,
-      start_time,
-      end_time,
-      is_all_day: is_all_day || false,
+      start_time: start_time === '' ? null : start_time,
+      end_time: end_time === '' ? null : end_time,
+      is_all_day: is_all_day ?? true,
     };
 
     const event = await createEvent(eventInput);

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SwipeHandler } from './SwipeHandler';
 import { EventCard } from './EventCard';
+import { DayEventsModal } from './DayEventsModal';
 import { Button } from '@/components/ui/button';
 import {
   getMonthDays,
@@ -29,6 +30,7 @@ interface MonthViewProps {
 export function MonthView({ events, initialDate }: MonthViewProps) {
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState(initialDate || new Date());
+  const [modalDay, setModalDay] = useState<{ date: Date; events: Event[] } | null>(null);
 
   const days = getMonthDays(currentDate);
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -43,6 +45,14 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
 
   const handleToday = () => {
     setCurrentDate(new Date());
+  };
+
+  const handleDayClick = (day: Date, dayEvents: Event[]) => {
+    if (dayEvents.length === 0) {
+      router.push(`/events/new?date=${formatDateForAPI(day)}`);
+    } else {
+      setModalDay({ date: day, events: dayEvents });
+    }
   };
 
   return (
@@ -96,8 +106,9 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
               return (
                 <div
                   key={idx}
+                  onClick={() => handleDayClick(day, dayEvents)}
                   className={cn(
-                    'min-h-[70px] md:min-h-[100px] p-0.5 md:p-2 border rounded',
+                    'min-h-[70px] md:min-h-[100px] p-0.5 md:p-2 border rounded cursor-pointer transition-colors hover:bg-muted/50',
                     !isCurrentMonth && 'bg-muted/30 text-muted-foreground',
                     isToday && 'ring-1 md:ring-2 ring-primary'
                   )}
@@ -126,6 +137,15 @@ export function MonthView({ events, initialDate }: MonthViewProps) {
           </div>
         </div>
       </SwipeHandler>
+
+      {/* Day Events Modal */}
+      {modalDay && (
+        <DayEventsModal
+          date={modalDay.date}
+          events={modalDay.events}
+          onClose={() => setModalDay(null)}
+        />
+      )}
     </div>
   );
 }

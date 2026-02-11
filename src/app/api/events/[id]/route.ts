@@ -93,8 +93,8 @@ export async function PATCH(
       updateInput.event_type = body.event_type;
     }
     if (body.start_date !== undefined) updateInput.start_date = body.start_date;
-    if (body.start_time !== undefined) updateInput.start_time = body.start_time;
-    if (body.end_time !== undefined) updateInput.end_time = body.end_time;
+    if (body.start_time !== undefined) updateInput.start_time = body.start_time === '' ? null : body.start_time;
+    if (body.end_time !== undefined) updateInput.end_time = body.end_time === '' ? null : body.end_time;
     if (body.is_all_day !== undefined) updateInput.is_all_day = body.is_all_day;
 
     const updatedEvent = await updateEvent(

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SwipeHandler } from './SwipeHandler';
 import { EventCard } from './EventCard';
+import { DayEventsModal } from './DayEventsModal';
 import { Button } from '@/components/ui/button';
 import {
   getWeekDays,
@@ -12,11 +13,12 @@ import {
   formatMonthYear,
   formatDayOfWeek,
   formatDayNumber,
+  formatDateForAPI,
   formatHour,
   getHoursArray,
   isTodayUtil,
 } from '@/lib/calendar/date-utils';
-import { getEventsForDate, getAllDayEvents, getTimedEvents, getEventsForHour } from '@/lib/calendar/event-utils';
+import { getEventsForDate, getAllDayEvents, getTimedEvents, getEventsForHour, sortEventsByTime } from '@/lib/calendar/event-utils';
 import { cn } from '@/lib/utils';
 import type { Event } from '@/types/database';
 
@@ -28,6 +30,7 @@ interface WeekViewProps {
 export function WeekView({ events, initialDate }: WeekViewProps) {
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState(initialDate || new Date());
+  const [modalDay, setModalDay] = useState<{ date: Date; events: Event[] } | null>(null);
 
   const weekDays = getWeekDays(currentDate);
   const hours = getHoursArray();
@@ -42,6 +45,14 @@ export function WeekView({ events, initialDate }: WeekViewProps) {
 
   const handleToday = () => {
     setCurrentDate(new Date());
+  };
+
+  const handleDayClick = (day: Date, dayEvents: Event[]) => {
+    if (dayEvents.length === 0) {
+      router.push(`/events/new?date=${formatDateForAPI(day)}`);
+    } else {
+      setModalDay({ date: day, events: dayEvents });
+    }
   };
 
   return (
@@ -78,18 +89,22 @@ export function WeekView({ events, initialDate }: WeekViewProps) {
           {/* Day headers */}
           <div className="grid grid-cols-8 gap-2 mb-2 sticky top-0 bg-background z-10">
             <div className="text-sm font-medium text-center py-2">Time</div>
-            {weekDays.map((day, idx) => (
-              <div
-                key={idx}
-                className={cn(
-                  'text-center py-2 rounded-lg',
-                  isTodayUtil(day) && 'bg-primary text-primary-foreground'
-                )}
-              >
-                <div className="text-xs">{formatDayOfWeek(day)}</div>
-                <div className="text-lg font-semibold">{formatDayNumber(day)}</div>
-              </div>
-            ))}
+            {weekDays.map((day, idx) => {
+              const dayEvents = sortEventsByTime(getEventsForDate(events, day));
+              return (
+                <div
+                  key={idx}
+                  onClick={() => handleDayClick(day, dayEvents)}
+                  className={cn(
+                    'text-center py-2 rounded-lg cursor-pointer transition-colors hover:bg-muted/50',
+                    isTodayUtil(day) && 'bg-primary text-primary-foreground hover:bg-primary/80'
+                  )}
+                >
+                  <div className="text-xs">{formatDayOfWeek(day)}</div>
+                  <div className="text-lg font-semibold">{formatDayNumber(day)}</div>
+                </div>
+              );
+            })}
           </div>
 
           {/* All-day events row */}
@@ -121,7 +136,11 @@ export function WeekView({ events, initialDate }: WeekViewProps) {
                 const hourEvents = getEventsForHour(timedEvents, hour);
 
                 return (
-                  <div key={idx} className="min-h-[60px] p-1 space-y-1">
+                  <div
+                    key={idx}
+                    onClick={() => router.push(`/events/new?date=${formatDateForAPI(day)}`)}
+                    className="min-h-[60px] p-1 space-y-1 cursor-pointer hover:bg-muted/30 rounded transition-colors"
+                  >
                     {hourEvents.map((event) => (
                       <EventCard key={event.id} event={event} size="small" />
                     ))}
@@ -132,6 +151,15 @@ export function WeekView({ events, initialDate }: WeekViewProps) {
           ))}
         </div>
       </SwipeHandler>
+
+      {/* Day Events Modal */}
+      {modalDay && (
+        <DayEventsModal
+          date={modalDay.date}
+          events={modalDay.events}
+          onClose={() => setModalDay(null)}
+        />
+      )}
     </div>
   );
 }

@@ -20,6 +20,7 @@ export function EventCard({ event, size = 'medium', showTime = true }: EventCard
   return (
     <Link
       href={`/events/${event.id}/edit`}
+      onClick={(e) => e.stopPropagation()}
       className={cn(
         'block rounded-md border transition-colors hover:opacity-80',
         EVENT_TYPE_COLORS[event.event_type],
